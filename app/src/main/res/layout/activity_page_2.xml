@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.hackathon.amex.amexaccept.Page_2">
 
-    <TextView android:text="Did merchant display the AMEX logo?" android:layout_width="wrap_content"
+    <TextView android:text="Was there an AMEX logo in display?" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
 
@@ -22,13 +22,46 @@
         android:textOff="No"
         android:onClick="onAMEXLogoDisplayToggleClick" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/payRequestGroup"
         android:layout_below="@+id/toggleButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:spinnerMode="dialog" />
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Did they ask you to..."
+            android:id="@+id/requestHeader"
+            android:layout_below="@+id/toggleButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay by other card"
+            android:id="@+id/rbOtherCard" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay by cash or cheque"
+            android:id="@+id/rbPayCashCheque" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay surcharge for using AMEX card"
+            android:id="@+id/rbSurcharge" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay minimum value charge for using AMEX card"
+            android:id="@+id/rbMinimumValue" />
+    </RadioGroup>
 
 </RelativeLayout>
