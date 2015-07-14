@@ -9,63 +9,108 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 
-public class MainActivity extends ActionBarActivity {
- 
-//    private GoogleApiClient mGoogleApiClient;
-//
-//    private TextView mViewName = (TextView) findViewById(R.id.mViewName);
-//    private TextView mViewAddress = (TextView) findViewById(R.id.mViewName);
-//    private TextView mViewAttributions = (TextView) findViewById(R.id.mViewName);
-//
-//    public void onPickButtonClick(View v) {
-//        // Construct an intent for the place picker
-//        try {
-//            PlacePicker.IntentBuilder intentBuilder =
-//                    new PlacePicker.IntentBuilder();
-//            Intent intent = intentBuilder.build(this);
-//            // Start the intent by requesting a result,
-//            // identified by a request code.
-//            startActivityForResult(intent, REQUEST_PLACE_PICKER);
-//
-//        } catch (GooglePlayServicesRepairableException e) {
-//            // ...
-//        } catch (GooglePlayServicesNotAvailableException e) {
-//            // ...
-//        }
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode,
-//                                    int resultCode, Intent data) {
-//
-//        if (requestCode == REQUEST_PLACE_PICKER
-//                && resultCode == Activity.RESULT_OK) {
-//
-//            // The user has selected a place. Extract the name and address.
-//            final Place place = PlacePicker.getPlace(data, this);
-//
-//            final CharSequence name = place.getName();
-//            final CharSequence address = place.getAddress();
-//            String attributions = PlacePicker.getAttributions(data);
-//            if (attributions == null) {
-//                attributions = "";
-//            }
-//
-//            mViewName.setText(name);
-//            mViewAddress.setText(address);
-//            mViewAttributions.setText(Html.fromHtml(attributions));
-//
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
+public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+
+    private GoogleApiClient mGoogleApiClient;
+
+    /**
+     * Request code passed to the PlacePicker intent to identify its result when it returns.
+     */
+    private static final int REQUEST_PLACE_PICKER = 1;
+    private TextView mViewName;
+    private TextView mViewAddress;
+    private TextView mViewAttributions;
+
+    public void onPickButtonClick(View v) {
+        // Construct an intent for the place picker
+        try {
+            PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+            Intent intent = intentBuilder.build(this);
+            // Start the intent by requesting a result,
+            // identified by a request code.
+            startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            // ...
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // ...
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_PLACE_PICKER
+                && resultCode == Activity.RESULT_OK) {
+
+            Toast.makeText(this, "Place", Toast.LENGTH_LONG).show();
+
+            // The user has selected a place. Extract the name and address.
+            final Place place = PlacePicker.getPlace(data, this);
+
+            final CharSequence name = place.getName();
+            final CharSequence address = place.getAddress();
+            String attributions = PlacePicker.getAttributions(data);
+            if (attributions == null) {
+                attributions = "";
+            }
+
+            mViewName.setText(name);
+            mViewAddress.setText(address);
+            mViewAttributions.setText(Html.fromHtml(attributions));
+
+        } else {
+            Toast.makeText(this, "Nothing happened", Toast.LENGTH_LONG).show();
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mViewName = (TextView) findViewById(R.id.mViewName);
+        mViewAddress = (TextView) findViewById(R.id.mViewName);
+        mViewAttributions = (TextView) findViewById(R.id.mViewName);
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -88,5 +133,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }
