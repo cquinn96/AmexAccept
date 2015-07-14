@@ -198,10 +198,16 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     }
 
     public void updateMap(){
+
+        LatLng currentPositionLatLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).zoom(12).build();
+                .target(currentPositionLatLong).zoom(14).build();
         mGoogleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
+
+        mGoogleMap.addMarker(new MarkerOptions().position(currentPositionLatLong)
+                .title("Current Location"));
     }
 
     @Override
@@ -217,7 +223,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        mGoogleMap = googleMap; 
+        mGoogleMap = googleMap;
 
 //        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
 //                .title("Amex Community Stadium"));
@@ -228,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         //LatLng usersPos = getUsersPos();
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(60.8623559, -1.0841516)).zoom(16).build();
+                .target(new LatLng(60.8623559, -1.0841516)).zoom(14).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
