@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 
@@ -127,15 +129,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-//        mGoogleApiClient = new GoogleApiClient
-//                .Builder(this)
-//                .addApi(Places.GEO_DATA_API)
-//                .addApi(Places.PLACE_DETECTION_API)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .build();
-
         buildGoogleApiClient();
 
         registerSearchBar();
@@ -193,20 +186,25 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         if (mLastLocation != null) {
 //            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
 //            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            updateMap();
+            updateMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            addCurrentLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
         }
     }
 
-    public void updateMap(){
+    public void updateMap(double lat, double longitude){
 
-        LatLng currentPositionLatLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        LatLng currentPositionLatLong = new LatLng(lat, longitude);
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(currentPositionLatLong).zoom(14).build();
         mGoogleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
+    }
+
+    public void addCurrentLocation(double lat, double longitude){
+        LatLng currentPositionLatLong = new LatLng(lat, longitude);
         mGoogleMap.addMarker(new MarkerOptions().position(currentPositionLatLong)
                 .title("Current Location"));
     }
@@ -242,50 +240,93 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
     public void registerSearchBar() {
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
-        final String[] searchSuggestions = new String[] {"CCC", "CCB", "CCD", "ABC", "MVP", "MVC", "TTL", "TTT"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestions);
-        searchBar.setAdapter(adapter);
+//        final Place[] searchSuggestions = new Place[] {};
+//        final ArrayAdapter<Place> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestions);
+        final ArrayList<Place> placesList = new ArrayList<Place>();
+
+        final String[] searchSuggestionsNames = new String[] {};
+        final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestionsNames);
+        searchBar.setAdapter(adapterNames);
+
+        searchBar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Place selectedPlace = placesList.get(position);
+                searchBar.dismissDropDown();
+
+                updateMap(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Place selectedPlace = placesList.get(position);
+                searchBar.dismissDropDown();
+
+                updateMap(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude);
+            }
+        });
+
 
         searchBar.addTextChangedListener(new TextWatcher() {
+
+            private String lastString = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                if (s.length() > 0 && (!s.toString().equals(lastString))) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    PendingResult<AutocompletePredictionBuffer> result = BusinessSearch.search(mGoogleApiClient, s.toString(), new LatLngBounds(new LatLng(51, -0.125), new LatLng(51.5, -0.12)));
+                    LatLngBounds latLngBounds = new LatLngBounds(new LatLng(mLastLocation.getLatitude() - 1, mLastLocation.getLongitude() - 1),
+                            new LatLng(mLastLocation.getLatitude() + 1, mLastLocation.getLongitude() + 1));
+
+                    PendingResult<AutocompletePredictionBuffer> result = BusinessSearch.search(mGoogleApiClient, s.toString(), latLngBounds);
                     result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
                         @Override
                         public void onResult(AutocompletePredictionBuffer autocompletePredictions) {
-                            if(autocompletePredictions.getStatus().isSuccess() && autocompletePredictions.getCount()>0) {
+                            adapterNames.clear();
+                            placesList.clear();
+                            if (autocompletePredictions.getStatus().isSuccess() && autocompletePredictions.getCount() > 0) {
                                 Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
-                                while(iterator.hasNext()) {
+                                while (iterator.hasNext()) {
                                     AutocompletePrediction result = iterator.next();
                                     String id = result.getPlaceId();
                                     PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, id);
                                     placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
                                         @Override
                                         public void onResult(PlaceBuffer places) {
-                                            if(places.getStatus().isSuccess()) {
-                                                adapter.add(places.get(0).getName().toString());
+                                            if (places.getStatus().isSuccess()) {
+                                                placesList.add(places.get(0));
+                                                adapterNames.add(places.get(0).getName().toString());
                                             }
                                             places.release();
                                         }
                                     });
                                 }
-                                adapter.notifyDataSetChanged();
+                                adapterNames.notifyDataSetChanged();
                                 searchBar.showDropDown();
                             }
                             autocompletePredictions.release();
                         }
                     });
                 }
+                lastString = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
+
     }
 }
