@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
-
+ 
 //    private GoogleApiClient mGoogleApiClient;
 //
 //    private TextView mViewName = (TextView) findViewById(R.id.mViewName);
