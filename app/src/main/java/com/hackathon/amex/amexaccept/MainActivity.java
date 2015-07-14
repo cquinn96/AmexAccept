@@ -217,10 +217,10 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        mGoogleMap = googleMap;
+        mGoogleMap = googleMap; 
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
-                .title("Amex Community Stadium"));
+//        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
+//                .title("Amex Community Stadium"));
 
 //        LatLng brighton = new LatLng(60.8623559, -0.0841516);
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLng(brighton));
@@ -228,7 +228,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         //LatLng usersPos = getUsersPos();
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(60.8623559, -1.0841516)).zoom(14).build();
+                .target(new LatLng(60.8623559, -1.0841516)).zoom(16).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
