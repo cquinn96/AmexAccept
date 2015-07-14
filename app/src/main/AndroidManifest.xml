@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.AIzaSyAE-1sMu7Gg_GqdJQn7a1tXBT2AGBM5d4I"
+            android:value="AIzaSyAE-1sMu7Gg_GqdJQn7a1tXBT2AGBM5d4I"/>
     </application>
 
 </manifest>
