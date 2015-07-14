@@ -19,7 +19,7 @@ public class BusinessSearch {
     private static final AutocompleteFilter autocompleteFilter = AutocompleteFilter.create(placeTypes);
 
     public static PendingResult<AutocompletePredictionBuffer> search(GoogleApiClient client, String query, LatLngBounds bounds) {
-        return Places.GeoDataApi.getAutocompletePredictions(client, query, bounds, autocompleteFilter);
+        return Places.GeoDataApi.getAutocompletePredictions(client, query, bounds, null);
     }
 
 }

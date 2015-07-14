@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -198,10 +199,16 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     }
 
     public void updateMap(){
+
+        LatLng currentPositionLatLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).zoom(12).build();
+                .target(currentPositionLatLong).zoom(14).build();
         mGoogleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
+
+        mGoogleMap.addMarker(new MarkerOptions().position(currentPositionLatLong)
+                .title("Current Location"));
     }
 
     @Override
@@ -217,7 +224,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        mGoogleMap = googleMap; 
+        mGoogleMap = googleMap;
 
 //        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
 //                .title("Amex Community Stadium"));
@@ -228,7 +235,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         //LatLng usersPos = getUsersPos();
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(60.8623559, -1.0841516)).zoom(16).build();
+                .target(new LatLng(60.8623559, -1.0841516)).zoom(14).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
@@ -236,13 +243,12 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     public void registerSearchBar() {
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
         final String[] searchSuggestions = new String[] {"CCC", "CCB", "CCD", "ABC", "MVP", "MVC", "TTL", "TTT"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, searchSuggestions);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestions);
         searchBar.setAdapter(adapter);
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -256,11 +262,26 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                     result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
                         @Override
                         public void onResult(AutocompletePredictionBuffer autocompletePredictions) {
-                            Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
-                            adapter.notifyDataSetChanged();
-                            //TODO: Get location based suggestions.
+                            if(autocompletePredictions.getStatus().isSuccess() && autocompletePredictions.getCount()>0) {
+                                Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
+                                while(iterator.hasNext()) {
+                                    AutocompletePrediction result = iterator.next();
+                                    String id = result.getPlaceId();
+                                    PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, id);
+                                    placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
+                                        @Override
+                                        public void onResult(PlaceBuffer places) {
+                                            if(places.getStatus().isSuccess()) {
+                                                adapter.add(places.get(0).getName().toString());
+                                            }
+                                            places.release();
+                                        }
+                                    });
+                                }
+                                adapter.notifyDataSetChanged();
+                                searchBar.showDropDown();
+                            }
                             autocompletePredictions.release();
-                            searchBar.showDropDown();
                         }
                     });
                 }
