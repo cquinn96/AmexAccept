@@ -56,10 +56,12 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     }
 
 
-    public void onSubmitButtonClick(View v) {
+    public void onMainNextButtonClick(View v) {
         // send or display a notification
         //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
         //smsMgr.sendTextMessage();
+        Intent i = new Intent(this, Page_2.class);
+        startActivity(i);
     }
 
 
