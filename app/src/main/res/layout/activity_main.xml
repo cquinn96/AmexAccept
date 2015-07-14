@@ -26,7 +26,7 @@
         android:id="@+id/pickPlaceButton"
         android:textSize="20sp"
         android:onClick="onPickButtonClick"
-        android:layout_above="@+id/mViewName"
+        android:layout_below="@+id/map"
         android:layout_centerHorizontal="true" />
 
     <TextView android:text="Name" android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:id="@+id/mViewName"
         android:textSize="20sp"
         android:padding="1dp"
-        android:layout_above="@+id/mViewAddress"
+        android:layout_below="@id/pickPlaceButton"
         android:layout_centerHorizontal="true" />
 
     <TextView android:text="Address" android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:id="@+id/mViewAddress"
         android:textSize="20sp"
         android:padding="1dp"
-        android:layout_above="@+id/mViewAttributions"
+        android:layout_below="@+id/mViewName"
         android:layout_centerHorizontal="true" />
 
     <TextView android:text="Attributions" android:layout_width="wrap_content"
@@ -53,20 +53,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
 
-    <!--<SearchView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/searchView"-->
-        <!--android:layout_below="@+id/textView"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
-    <!--<EditText-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/editText"-->
-        <!--android:layout_below="@+id/textView"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:textSize="20sp"/>-->
 
     <fragment
         class="com.google.android.gms.maps.MapFragment"
