@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AmexAccept.iml" filepath="$PROJECT_DIR$/AmexAccept.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AmexAccepNew.iml" filepath="$PROJECT_DIR$/AmexAccepNew.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
