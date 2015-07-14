@@ -62,6 +62,20 @@
             android:layout_height="wrap_content"
             android:text="Pay minimum value charge for using AMEX card"
             android:id="@+id/rbMinimumValue" />
+
     </RadioGroup>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submitButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/payRequestGroup"
+        android:layout_alignEnd="@+id/payRequestGroup"
+        android:backgroundTint="#ff7282ff"
+        android:onClick="onSubmitClick" />
 
 </RelativeLayout>
