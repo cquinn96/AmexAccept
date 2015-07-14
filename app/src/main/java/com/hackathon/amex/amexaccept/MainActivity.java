@@ -2,6 +2,7 @@ package com.hackathon.amex.amexaccept;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
@@ -49,6 +51,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     private TextView mViewAddress;
     private TextView mViewAttributions;
     private AutoCompleteTextView searchBar;
+    Location mLastLocation;
+    GoogleMap mGoogleMap;
 
     public void onPickButtonClick(View v) {
         // Construct an intent for the place picker
@@ -123,17 +127,27 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         mapFragment.getMapAsync(this);
 
 
-        //GoogleMap mGoogleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
+//        mGoogleApiClient = new GoogleApiClient
+//                .Builder(this)
+//                .addApi(Places.GEO_DATA_API)
+//                .addApi(Places.PLACE_DETECTION_API)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .build();
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
+        buildGoogleApiClient();
+
+        registerSearchBar();
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
+                .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
-        registerSearchBar();
     }
 
     @Override
@@ -173,6 +187,21 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     @Override
     public void onConnected(Bundle bundle) {
 
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+            updateMap();
+
+        }
+    }
+
+    public void updateMap(){
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).zoom(12).build();
+        mGoogleMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
     }
 
     @Override
@@ -187,18 +216,20 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        mGoogleMap = googleMap;
+
         googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
                 .title("Amex Community Stadium"));
 
-//        LatLng brighton = new LatLng(50.8623559, -0.0841516);
+//        LatLng brighton = new LatLng(60.8623559, -0.0841516);
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLng(brighton));
 
         //LatLng usersPos = getUsersPos();
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(50.8623559, -0.0841516)).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
+                .target(new LatLng(60.8623559, -1.0841516)).zoom(14).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 
