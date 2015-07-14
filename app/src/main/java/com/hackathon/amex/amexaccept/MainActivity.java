@@ -2,6 +2,7 @@ package com.hackathon.amex.amexaccept;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,20 +21,22 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnMapReadyCallback {
 
     private GoogleApiClient mGoogleApiClient;
-
-    /**
-     * Request code passed to the PlacePicker intent to identify its result when it returns.
-     */
     private static final int REQUEST_PLACE_PICKER = 1;
     private TextView mViewName;
     private TextView mViewAddress;
     private TextView mViewAttributions;
-    private TextView testTextView;
 
     public void onPickButtonClick(View v) {
         // Construct an intent for the place picker
@@ -81,7 +84,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
             mViewAttributions.setText(Html.fromHtml(attributions));
 
         } else {
-            Toast.makeText(this, "Oops make sure you enable location services", Toast.LENGTH_LONG).show();
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -94,7 +96,12 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         mViewName = (TextView) findViewById(R.id.mViewName);
         mViewAddress = (TextView) findViewById(R.id.mViewAddress);
         mViewAttributions = (TextView) findViewById(R.id.mViewAttributions);
-        testTextView = (TextView) findViewById(R.id.textView);
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
+        //GoogleMap mGoogleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -103,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
     }
 
     @Override
@@ -151,6 +159,23 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
+                .title("Amex Community Stadium"));
+
+//        LatLng brighton = new LatLng(50.8623559, -0.0841516);
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(brighton));
+
+        //LatLng usersPos = getUsersPos();
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(50.8623559, -0.0841516)).zoom(12).build();
+        googleMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
 
     }
 }

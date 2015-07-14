@@ -10,41 +10,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="15dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose a place"
         android:id="@+id/pickPlaceButton"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
         android:textSize="20sp"
         android:onClick="onPickButtonClick"
-        />
+        android:layout_above="@+id/mViewName"
+        android:layout_centerHorizontal="true" />
 
     <TextView android:text="Name" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/mViewName"
-        android:layout_below="@+id/pickPlaceButton"
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:padding="5dp"/>
+        android:textSize="20sp"
+        android:padding="1dp"
+        android:layout_above="@+id/mViewAddress"
+        android:layout_centerHorizontal="true" />
 
     <TextView android:text="Address" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/mViewAddress"
-        android:layout_below="@+id/mViewName"
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:padding="5dp"/>
+        android:textSize="20sp"
+        android:padding="1dp"
+        android:layout_above="@+id/mViewAttributions"
+        android:layout_centerHorizontal="true" />
 
     <TextView android:text="Attributions" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/mViewAttributions"
-        android:layout_below="@+id/mViewAddress"
+        android:textSize="20sp"
+        android:padding="1dp"
         android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:padding="5dp"/>
+        android:layout_alignParentBottom="true" />
+
+    <!--<SearchView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/searchView"-->
+        <!--android:layout_below="@+id/textView"-->
+        <!--android:layout_centerHorizontal="true" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_below="@+id/textView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textSize="20sp"/>-->
+
+    <fragment
+        class="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/textView"/>
+
+
+    <!--<com.google.android.gms.maps.MapView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_below="@+id/map"/>-->
 
 </RelativeLayout>
