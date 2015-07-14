@@ -58,6 +58,14 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         }
     }
 
+
+    public void onSubmitButtonClick(View v) {
+        // send or display a notification
+        //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
+        //smsMgr.sendTextMessage();
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode, Intent data) {
