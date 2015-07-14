@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +22,10 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -27,7 +35,10 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Iterator;
 
 
 public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnMapReadyCallback {
@@ -37,6 +48,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     private TextView mViewName;
     private TextView mViewAddress;
     private TextView mViewAttributions;
+    private AutoCompleteTextView searchBar;
 
     public void onPickButtonClick(View v) {
         // Construct an intent for the place picker
@@ -121,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        registerSearchBar();
     }
 
     @Override
@@ -187,5 +200,40 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
+    }
+
+    public void registerSearchBar() {
+        searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
+        final String[] searchSuggestions = new String[] {"CCC", "CCB", "CCD", "ABC", "MVP", "MVC", "TTL", "TTT"};
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, searchSuggestions);
+        searchBar.setAdapter(adapter);
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    PendingResult<AutocompletePredictionBuffer> result = BusinessSearch.search(mGoogleApiClient, s.toString(), new LatLngBounds(new LatLng(51, -0.125), new LatLng(51.5, -0.12)));
+                    result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
+                        @Override
+                        public void onResult(AutocompletePredictionBuffer autocompletePredictions) {
+                            Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
+                            adapter.notifyDataSetChanged();
+                            //TODO: Get location based suggestions.
+                            autocompletePredictions.release();
+                            searchBar.showDropDown();
+                        }
+                    });
+                }
+            }
+        });
     }
 }
