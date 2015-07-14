@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:paddingBottom="15dp"/>
 
-    <AutoCompleteTextView android:text="Search for a business..."
+    <AutoCompleteTextView android:hint="Search for a business..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_bar"
