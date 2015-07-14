@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hackathon.amex.amexaccept" >
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +22,7 @@
             </intent-filter>
         </activity>
         <meta-data
-            android:name="com.google.android.geo.AIzaSyAE-1sMu7Gg_GqdJQn7a1tXBT2AGBM5d4I"
+            android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAE-1sMu7Gg_GqdJQn7a1tXBT2AGBM5d4I"/>
     </application>
 

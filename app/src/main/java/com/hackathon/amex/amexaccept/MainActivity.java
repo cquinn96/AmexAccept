@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     private TextView mViewName;
     private TextView mViewAddress;
     private TextView mViewAttributions;
+    private TextView testTextView;
 
     public void onPickButtonClick(View v) {
         // Construct an intent for the place picker
@@ -61,8 +62,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         if (requestCode == REQUEST_PLACE_PICKER
                 && resultCode == Activity.RESULT_OK) {
 
-            Toast.makeText(this, "Place", Toast.LENGTH_LONG).show();
-
             // The user has selected a place. Extract the name and address.
             final Place place = PlacePicker.getPlace(data, this);
 
@@ -73,12 +72,16 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 attributions = "";
             }
 
+            String test = name.toString();
+            Toast.makeText(this, test, Toast.LENGTH_LONG).show();
+
+
             mViewName.setText(name);
             mViewAddress.setText(address);
             mViewAttributions.setText(Html.fromHtml(attributions));
 
         } else {
-            Toast.makeText(this, "Nothing happened", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Oops make sure you enable location services", Toast.LENGTH_LONG).show();
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -89,8 +92,9 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         setContentView(R.layout.activity_main);
 
         mViewName = (TextView) findViewById(R.id.mViewName);
-        mViewAddress = (TextView) findViewById(R.id.mViewName);
-        mViewAttributions = (TextView) findViewById(R.id.mViewName);
+        mViewAddress = (TextView) findViewById(R.id.mViewAddress);
+        mViewAttributions = (TextView) findViewById(R.id.mViewAttributions);
+        testTextView = (TextView) findViewById(R.id.textView);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
