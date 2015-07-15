@@ -43,11 +43,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnMapReadyCallback {
@@ -82,7 +79,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         }
     }
 
-
     public void onMainNextButtonClick(View v) {
         // send or display a notification
         //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
@@ -90,7 +86,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         Intent i = new Intent(this, Page_2.class);
         startActivity(i);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode,
@@ -109,6 +104,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 attributions = "";
             }
 
+            //final LatLng latLng = place.getLatLng();
+
             String test = name.toString();
             //Toast.makeText(this, test, Toast.LENGTH_LONG).show();
 
@@ -116,6 +113,9 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
             //mViewName.setText(name);
             //mViewAddress.setText(address);
             mViewAttributions.setText(Html.fromHtml(attributions));
+
+            updateMap(place.getLatLng().latitude, place.getLatLng().longitude);
+            addMarker(place.getLatLng().latitude, place.getLatLng().longitude, place.getName().toString());
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -193,10 +193,10 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     public void onConnected(Bundle bundle) {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            updateMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            addMarker(mLastLocation.getLatitude(), mLastLocation.getLongitude(), "Current Location");
-        }
+//        if (mLastLocation != null) {
+//            updateMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+//            addMarker(mLastLocation.getLatitude(), mLastLocation.getLongitude(), "Current Location");
+//        }
     }
 
     public void updateMap(double lat, double longitude) {
@@ -233,14 +233,14 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
         mGoogleMap = googleMap;
 
-//        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
-//                .title("Amex Community Stadium"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(50.8623559, -0.0841516))
+                .title("Current Location"));
 
 //        LatLng brighton = new LatLng(60.8623559, -0.0841516);
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLng(brighton));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(50.8623559, -0.0841516)).zoom(14).build();
+                .target(new LatLng(50.8623559, -0.0841516)).zoom(16).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
@@ -255,19 +255,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         final String[] searchSuggestionsNames = new String[] {};
         final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, searchSuggestionsNames);
         searchBar.setAdapter(adapterNames);
-
-//        searchBar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
-
 
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
