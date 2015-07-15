@@ -109,7 +109,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
             String test = name.toString();
             Toast.makeText(this, test, Toast.LENGTH_LONG).show();
 
-            updateTextBoxes (name, address);
+            updateTextBoxes(name, address);
             //mViewName.setText(name);
             //mViewAddress.setText(address);
             mViewAttributions.setText(Html.fromHtml(attributions));
@@ -263,11 +263,17 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 //            }
 //        });
 
+
+
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Place selectedPlace = placesList.get(position);
+
+                adapterNames.clear();
+                placesList.clear();
                 searchBar.dismissDropDown();
+                searchBar.setAdapter(null);
 
 //                try {
 //                    LatLng latLng = selectedPlace.getLatLng();
@@ -279,6 +285,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 addMarker(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude, selectedPlace.getName().toString());
 
                 updateTextBoxes(selectedPlace.getName(), selectedPlace.getAddress());
+                searchBar.clearFocus();
             }
         });
 
@@ -293,6 +300,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchBar.setAdapter(adapterNames);
                 if (s.length() > 0 && (!s.toString().equals(lastString))) {
 
                     LatLngBounds latLngBounds = new LatLngBounds(new LatLng(mLastLocation.getLatitude() - 1, mLastLocation.getLongitude() - 1),

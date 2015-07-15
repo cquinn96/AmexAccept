@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:textSize="15sp"
-        android:paddingBottom="3dp"/>
+        android:paddingBottom="10dp"/>
 
     <AutoCompleteTextView android:hint="Search for a business..."
         android:layout_width="match_parent"
@@ -34,15 +34,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"/>
 
+
+    <TextView android:text="Selected Location:" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:textSize="20sp"
+        android:layout_below="@id/pickPlaceButton"
+        android:layout_marginTop="0dp"/>
+
     <TextView android:text="Name" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mViewName"
         android:textSize="20sp"
         android:padding="1dp"
         android:gravity="center"
-        android:layout_below="@id/pickPlaceButton"
+        android:layout_below="@id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="5dp"/>
 
     <TextView android:text="Address" android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +60,7 @@
         android:gravity="center"
         android:layout_below="@+id/mViewName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="5dp"/>
 
     <TextView android:text="Attributions" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +69,6 @@
         android:padding="1dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
-
 
     <fragment
         class="com.google.android.gms.maps.MapFragment"
