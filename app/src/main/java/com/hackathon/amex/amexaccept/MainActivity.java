@@ -109,15 +109,21 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
             String test = name.toString();
             Toast.makeText(this, test, Toast.LENGTH_LONG).show();
 
-
-            mViewName.setText(name);
-            mViewAddress.setText(address);
+            updateTextBoxes (name, address);
+            //mViewName.setText(name);
+            //mViewAddress.setText(address);
             mViewAttributions.setText(Html.fromHtml(attributions));
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    public void updateTextBoxes(CharSequence name, CharSequence address) {
+        mViewName.setText(name);
+        mViewAddress.setText(address);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,6 +277,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
                 updateMap(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude);
                 addMarker(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude, selectedPlace.getName().toString());
+
+                updateTextBoxes(selectedPlace.getName(), selectedPlace.getAddress());
             }
         });
 
@@ -309,7 +317,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                                                 placesList.add(places.get(0));
                                                 adapterNames.add(places.get(0).getName().toString());
                                             }
-
                                         }
                                     });
                                 }
