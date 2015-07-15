@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:paddingBottom="15dp"/>
+        android:textSize="15sp"
+        android:paddingBottom="3dp"/>
 
     <AutoCompleteTextView android:hint="Search for a business..."
         android:layout_width="match_parent"
@@ -33,20 +34,22 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"/>
 
-    <TextView android:text="Name" android:layout_width="wrap_content"
+    <TextView android:text="Name" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mViewName"
         android:textSize="20sp"
         android:padding="1dp"
+        android:gravity="center"
         android:layout_below="@id/pickPlaceButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"/>
 
-    <TextView android:text="Address" android:layout_width="wrap_content"
+    <TextView android:text="Address" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mViewAddress"
         android:textSize="20sp"
         android:padding="1dp"
+        android:gravity="center"
         android:layout_below="@+id/mViewName"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"/>
