@@ -26,6 +26,8 @@ public class Page_2 extends ActionBarActivity {
     private ToggleButton mAmexFlagToggle;
     private RadioGroup mPayRequestGroup;
     private Button mSubmitButton;
+    private Button mButtonYes;
+    private Button mButtonNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,17 +82,17 @@ public class Page_2 extends ActionBarActivity {
         // send or display a notification
         //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
         //smsMgr.sendTextMessage();
-        TelephonyManager tMgr =(TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        //TelephonyManager tMgr =(TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         //String number = tMgr.getLine1Number();
-        String number = "447999002309";
+        String number = "+447999002309";
 
-        final boolean isLogoDisplayed = mAmexFlagToggle.isChecked();
-        String message = "Thank you for submitting your AcceptAmex query.";
-        if( isLogoDisplayed ) {
-            message += "\nYou've notified us that AMEX Logo was displayed.";
-            RadioButton selButton  = (RadioButton)findViewById(mPayRequestGroup.getCheckedRadioButtonId());
-            message += "\nMerchant action: " + selButton.getText();
-        }
+        //final boolean isLogoDisplayed = mAmexFlagToggle.isChecked();
+        String message = "Thank you for submitting to AcceptAmex. We will keep you updated when we have contacted the business.";
+//        if( isLogoDisplayed ) {
+//            message += "\nYou've notified us that AMEX Logo was displayed.";
+//            RadioButton selButton  = (RadioButton)findViewById(mPayRequestGroup.getCheckedRadioButtonId());
+//            message += "\nMerchant action: " + selButton.getText();
+//        }
 
         /** Creating a pending intent which will be broadcasted when an sms message is successfully sent */
         PendingIntent piSent = PendingIntent.getBroadcast(getBaseContext(), 0, new Intent("sent_msg"), 0);

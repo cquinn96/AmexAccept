@@ -37,6 +37,7 @@
             android:text="Yes"
             android:textSize="20dp"
             android:layout_margin="1dp"
+            android:id="@+id/buttonYes"
             android:onClick="onAMEXLogoDisplayYesClick"
             />
 
@@ -46,6 +47,7 @@
             android:text="No"
             android:textSize="20dp"
             android:layout_margin="1dp"
+            android:id="@+id/buttonNo"
             android:onClick="onAMEXLogoDisplayNoClick"
             />
     </LinearLayout>
