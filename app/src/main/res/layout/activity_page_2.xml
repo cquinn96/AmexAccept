@@ -8,26 +8,53 @@
 
     <TextView android:text="Was the AMEX logo displayed?" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:id="@+id/textView2" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButton"
+    <!--<ToggleButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="New ToggleButton"-->
+        <!--android:id="@+id/toggleButton"-->
+        <!--android:layout_below="@+id/textView2"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:textOn="Yes"-->
+        <!--android:textOff="No"-->
+        <!--android:onClick="onAMEXLogoDisplayToggleClick" />-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/question"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
         android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textOn="Yes"
-        android:textOff="No"
-        android:onClick="onAMEXLogoDisplayToggleClick" />
+        android:gravity="center">
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="55dp"
+            android:text="Yes"
+            android:textSize="20dp"
+            android:layout_margin="1dp"
+            android:onClick="onAMEXLogoDisplayYesClick"
+            />
+
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="55dp"
+            android:text="No"
+            android:textSize="20dp"
+            android:layout_margin="1dp"
+            android:onClick="onAMEXLogoDisplayNoClick"
+            />
+    </LinearLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/payRequestGroup"
-        android:layout_below="@+id/toggleButton"
+        android:layout_below="@+id/question"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -43,25 +70,25 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pay by other card"
+            android:text="Pay with another card"
             android:id="@+id/rbOtherCard" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pay by cash or cheque"
+            android:text="Pay with cash or cheque"
             android:id="@+id/rbPayCashCheque" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pay surcharge for using AMEX card"
+            android:text="Pay a surcharge for using your AMEX card"
             android:id="@+id/rbSurcharge" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pay minimum value charge for using AMEX card"
+            android:text="Pay a minimum value charge for using your AMEX card"
             android:id="@+id/rbMinimumValue" />
 
     </RadioGroup>
@@ -88,7 +115,8 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:id="@+id/textView3" />
+        android:id="@+id/textView3"
+        android:layout_marginBottom="10dp"/>
 
     <!--android:backgroundTint="#ff7282ff"-->
 

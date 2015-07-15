@@ -66,12 +66,23 @@ public class Page_2 extends ActionBarActivity {
         mPayRequestGroup.setVisibility(((ToggleButton) v).isChecked() ? View.VISIBLE : View.INVISIBLE);
     }
 
+    public void onAMEXLogoDisplayYesClick(View v) {
+        mPayRequestGroup.setVisibility(View.VISIBLE);
+    }
+
+    public void onAMEXLogoDisplayNoClick(View v) {
+        mPayRequestGroup.setVisibility(View.INVISIBLE);
+    }
+
+
+
     public void onSubmitClick(View v) {
         // send or display a notification
         //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
         //smsMgr.sendTextMessage();
         TelephonyManager tMgr =(TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String number = tMgr.getLine1Number();
+        //String number = tMgr.getLine1Number();
+        String number = "447999002309";
 
         final boolean isLogoDisplayed = mAmexFlagToggle.isChecked();
         String message = "Thank you for submitting your AcceptAmex query.";
