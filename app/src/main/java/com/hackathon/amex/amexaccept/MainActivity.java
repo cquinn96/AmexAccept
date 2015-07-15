@@ -40,6 +40,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
     private AutoCompleteTextView searchBar;
     Location mLastLocation;
     GoogleMap mGoogleMap;
+    private Marker currentMarker;
 
     public void onPickButtonClick(View v) {
         // Construct an intent for the place picker
@@ -180,33 +182,31 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
     @Override
     public void onConnected(Bundle bundle) {
-
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
-//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
             updateMap(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            addCurrentLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-
+            addMarker(mLastLocation.getLatitude(), mLastLocation.getLongitude(), "Current Location");
         }
     }
 
-    public void updateMap(double lat, double longitude){
-
+    public void updateMap(double lat, double longitude) {
         LatLng currentPositionLatLong = new LatLng(lat, longitude);
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(currentPositionLatLong).zoom(14).build();
+                .target(currentPositionLatLong).zoom(16).build();
         mGoogleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-
     }
 
-    public void addCurrentLocation(double lat, double longitude){
+    public void addMarker(double lat, double longitude, String markerName) {
         LatLng currentPositionLatLong = new LatLng(lat, longitude);
-        mGoogleMap.addMarker(new MarkerOptions().position(currentPositionLatLong)
-                .title("Current Location"));
+
+        if (currentMarker != null) {
+            currentMarker.remove();
+        }
+
+        currentMarker = mGoogleMap.addMarker(new MarkerOptions().position(currentPositionLatLong)
+                .title(markerName));
     }
 
     @Override
@@ -230,10 +230,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 //        LatLng brighton = new LatLng(60.8623559, -0.0841516);
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLng(brighton));
 
-        //LatLng usersPos = getUsersPos();
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(60.8623559, -1.0841516)).zoom(14).build();
+                .target(new LatLng(50.8623559, -0.0841516)).zoom(14).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
@@ -248,20 +246,16 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestionsNames);
         searchBar.setAdapter(adapterNames);
 
-        searchBar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Place selectedPlace = placesList.get(position);
-                searchBar.dismissDropDown();
-
-                updateMap(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        searchBar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -269,7 +263,14 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                 Place selectedPlace = placesList.get(position);
                 searchBar.dismissDropDown();
 
+//                try {
+//                    LatLng latLng = selectedPlace.getLatLng();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
                 updateMap(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude);
+                addMarker(selectedPlace.getLatLng().latitude, selectedPlace.getLatLng().longitude, selectedPlace.getName().toString());
             }
         });
 
@@ -308,7 +309,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                                                 placesList.add(places.get(0));
                                                 adapterNames.add(places.get(0).getName().toString());
                                             }
-                                            places.release();
+
                                         }
                                     });
                                 }
