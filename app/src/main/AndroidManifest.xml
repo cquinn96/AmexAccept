@@ -47,6 +47,10 @@
             android:name=".Page_2"
             android:label="@string/title_activity_page_2" >
         </activity>
+        <activity
+            android:name=".EndActivity"
+            android:label="@string/title_activity_end" >
+        </activity>
     </application>
 
     <receiver android:name=".SmsNotifications" >
