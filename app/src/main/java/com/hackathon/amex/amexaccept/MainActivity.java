@@ -110,7 +110,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
             }
 
             String test = name.toString();
-            Toast.makeText(this, test, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, test, Toast.LENGTH_LONG).show();
 
             updateTextBoxes(name, address);
             //mViewName.setText(name);
@@ -295,6 +295,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
 
                 updateTextBoxes(selectedPlace.getName(), selectedPlace.getAddress());
                 searchBar.clearFocus();
+
             }
         });
 
