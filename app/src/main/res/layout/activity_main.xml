@@ -17,17 +17,21 @@
         android:layout_height="wrap_content"
         android:id="@+id/search_bar"
         android:layout_below="@+id/textView"
-        android:paddingBottom="20dp"/>
+        android:paddingBottom="20dp"
+        android:singleLine="true"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose a place"
+        android:text="FIND"
         android:id="@+id/pickPlaceButton"
-        android:textSize="20sp"
+        android:background="#002663"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:onClick="onPickButtonClick"
         android:layout_below="@+id/map"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"/>
 
     <TextView android:text="Name" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +39,8 @@
         android:textSize="20sp"
         android:padding="1dp"
         android:layout_below="@id/pickPlaceButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"/>
 
     <TextView android:text="Address" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +48,8 @@
         android:textSize="20sp"
         android:padding="1dp"
         android:layout_below="@+id/mViewName"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"/>
 
     <TextView android:text="Attributions" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,8 +64,9 @@
         class="com.google.android.gms.maps.MapFragment"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_below="@+id/search_bar"/>
+        android:layout_height="200dp"
+        android:layout_below="@+id/search_bar"
+        />
 
 
     <!--<com.google.android.gms.maps.MapView-->
@@ -77,7 +84,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="#ff92adff"
+        android:background="#002663"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:onClick="onMainNextButtonClick" />
 
 </RelativeLayout>
