@@ -340,8 +340,6 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                                 adapterNames.notifyDataSetChanged();
                                 searchBar.showDropDown();
                             }
-                            placesList.put("ABC", null);
-                            adapterNames.add("ABC");
                             autocompletePredictions.release();
                         }
                     });
