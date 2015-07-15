@@ -112,5 +112,7 @@ public class Page_2 extends ActionBarActivity {
 
         /** Sending the Sms message to the intended party */
         smsManager.sendTextMessage(number, null, message, piSent, piDelivered);
+        Intent end = new Intent(getApplicationContext(), EndActivity.class);
+        startActivity(end);
     }
 }
