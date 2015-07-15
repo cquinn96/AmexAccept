@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -26,6 +27,8 @@ public class Page_2 extends ActionBarActivity {
     private ToggleButton mAmexFlagToggle;
     private RadioGroup mPayRequestGroup;
     private Button mSubmitButton;
+    private Button mButtonYes;
+    private Button mButtonNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class Page_2 extends ActionBarActivity {
         mPayRequestGroup.setVisibility(View.INVISIBLE);
 
         mSubmitButton = (Button)findViewById(R.id.submitButton);
+        mButtonYes = (Button)findViewById(R.id.buttonYes);
+        mButtonNo = (Button)findViewById(R.id.buttonNo);
     }
 
     @Override
@@ -55,9 +60,9 @@ public class Page_2 extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -68,29 +73,33 @@ public class Page_2 extends ActionBarActivity {
 
     public void onAMEXLogoDisplayYesClick(View v) {
         mPayRequestGroup.setVisibility(View.VISIBLE);
+        mButtonNo.setBackgroundColor(Color.rgb(0,38,99));
+        mButtonYes.setBackgroundColor(Color.rgb(80, 83, 242));
     }
 
     public void onAMEXLogoDisplayNoClick(View v) {
+
+        mButtonYes.setBackgroundColor(Color.rgb(0, 38, 99));
+        mButtonNo.setBackgroundColor(Color.rgb(80,83,242));
         mPayRequestGroup.setVisibility(View.INVISIBLE);
     }
-
-
 
     public void onSubmitClick(View v) {
         // send or display a notification
         //android.telephony.SmsManager smsMgr = android.telephony.SmsManager.getDefault();
         //smsMgr.sendTextMessage();
-        TelephonyManager tMgr =(TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        //TelephonyManager tMgr =(TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         //String number = tMgr.getLine1Number();
-        String number = "447999002309";
+        String number = "+447999002309";
 
-        final boolean isLogoDisplayed = mAmexFlagToggle.isChecked();
-        String message = "Thank you for submitting your AcceptAmex query.";
-        if( isLogoDisplayed ) {
-            message += "\nYou've notified us that AMEX Logo was displayed.";
-            RadioButton selButton  = (RadioButton)findViewById(mPayRequestGroup.getCheckedRadioButtonId());
-            message += "\nMerchant action: " + selButton.getText();
-        }
+
+        //final boolean isLogoDisplayed = mAmexFlagToggle.isChecked();
+        String message = "Thank you for submitting to AcceptAmex. We will keep you updated when we have contacted the business.";
+//        if( isLogoDisplayed ) {
+//            message += "\nYou've notified us that AMEX Logo was displayed.";
+//            RadioButton selButton  = (RadioButton)findViewById(mPayRequestGroup.getCheckedRadioButtonId());
+//            message += "\nMerchant action: " + selButton.getText();
+//        }
 
         /** Creating a pending intent which will be broadcasted when an sms message is successfully sent */
         PendingIntent piSent = PendingIntent.getBroadcast(getBaseContext(), 0, new Intent("sent_msg"), 0);

@@ -31,23 +31,31 @@
         android:orientation="horizontal"
         android:layout_below="@+id/textView2"
         android:gravity="center">
+
         <Button
             android:layout_width="170dp"
-            android:layout_height="55dp"
-            android:text="Yes"
+            android:layout_height="50dp"
+            android:text="No"
             android:textSize="20dp"
             android:layout_margin="1dp"
-            android:onClick="onAMEXLogoDisplayYesClick"
+            android:id="@+id/buttonNo"
+            android:textColor="#FFFFFF"
+            android:background="#5053F2"
+            android:onClick="onAMEXLogoDisplayNoClick"
             />
 
         <Button
             android:layout_width="170dp"
-            android:layout_height="55dp"
-            android:text="No"
+            android:layout_height="50dp"
+            android:text="Yes"
             android:textSize="20dp"
             android:layout_margin="1dp"
-            android:onClick="onAMEXLogoDisplayNoClick"
+            android:id="@+id/buttonYes"
+            android:textColor="#FFFFFF"
+            android:background="#002663"
+            android:onClick="onAMEXLogoDisplayYesClick"
             />
+
     </LinearLayout>
 
     <RadioGroup
@@ -64,6 +72,8 @@
             android:text="Did they ask you to..."
             android:id="@+id/requestHeader"
             android:layout_below="@+id/toggleButton"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -71,23 +81,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pay with another card"
+            android:textSize="15sp"
+            android:layout_margin="3dp"
             android:id="@+id/rbOtherCard" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pay with cash or cheque"
+            android:textSize="15sp"
+            android:layout_margin="3dp"
             android:id="@+id/rbPayCashCheque" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pay a surcharge for using your AMEX card"
+            android:textSize="15sp"
+            android:layout_margin="3dp"
             android:id="@+id/rbSurcharge" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:text="Pay a minimum value charge for using your AMEX card"
             android:id="@+id/rbMinimumValue" />
 
