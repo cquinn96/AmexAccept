@@ -44,7 +44,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnMapReadyCallback {
@@ -246,7 +249,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
 //        final Place[] searchSuggestions = new Place[] {};
 //        final ArrayAdapter<Place> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestions);
-        final ArrayList<Place> placesList = new ArrayList<Place>();
+        //final ArrayList<Place> placesList = new ArrayList<Place>();
+        final HashMap<String, Place> placesList = new HashMap<>();
 
         final String[] searchSuggestionsNames = new String[] {};
         final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestionsNames);
@@ -268,8 +272,13 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Place selectedPlace = placesList.get(position);
+                Place selectedPlace = placesList.get(adapterNames.getItem(position));
+                //String test = adapterNames.getItem(position);
 
+//                int aSize = adapterNames.getCount();
+//                int placesSize = placesList.size();
+
+                //test.toString();
                 adapterNames.clear();
                 placesList.clear();
                 searchBar.dismissDropDown();
@@ -322,7 +331,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                                         @Override
                                         public void onResult(PlaceBuffer places) {
                                             if (places.getStatus().isSuccess()) {
-                                                placesList.add(places.get(0));
+                                                placesList.put(places.get(0).getName().toString(), places.get(0));
                                                 adapterNames.add(places.get(0).getName().toString());
                                             }
                                         }
