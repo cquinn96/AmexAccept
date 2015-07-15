@@ -253,7 +253,7 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
         final HashMap<String, Place> placesList = new HashMap<>();
 
         final String[] searchSuggestionsNames = new String[] {};
-        final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchSuggestionsNames);
+        final ArrayAdapter<String> adapterNames = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, searchSuggestionsNames);
         searchBar.setAdapter(adapterNames);
 
 //        searchBar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -340,6 +340,8 @@ public class MainActivity extends ActionBarActivity implements ConnectionCallbac
                                 adapterNames.notifyDataSetChanged();
                                 searchBar.showDropDown();
                             }
+                            placesList.put("ABC", null);
+                            adapterNames.add("ABC");
                             autocompletePredictions.release();
                         }
                     });
